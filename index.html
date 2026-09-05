@@ -9,6 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
@@ -16,266 +17,427 @@
 
 <body>
 
-  <!-- Background -->
   <div class="background">
-    <div class="glow glow-one"></div>
-    <div class="glow glow-two"></div>
+    <div class="glow one"></div>
+    <div class="glow two"></div>
     <div class="stars"></div>
   </div>
 
-  <!-- Progress -->
-  <div class="progress">
-    <span class="dot active"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-  </div>
+  <div class="progress" id="progress"></div>
 
-  <!-- Music -->
-  <button class="music-btn" id="musicBtn" aria-label="Toggle music">
-    ♫
-  </button>
+  <button class="music-btn" id="musicBtn">♫</button>
 
-  <audio id="music" loop>
-    <!--
-      If you have a music.mp3 file:
-      1. Put it in the same folder as index.html
-      2. Uncomment the line below
+  <audio id="music" loop></audio>
 
-      <source src="music.mp3" type="audio/mpeg">
-    -->
-  </audio>
 
   <main id="story">
 
-    <!-- SCREEN 1 -->
+    <!-- ==================== SCREEN 1 ==================== -->
+
     <section class="screen active">
 
-      <div class="small-label">A little something for you</div>
+      <div class="label">
+        A LITTLE SOMETHING FOR YOU
+      </div>
 
-      <div class="birthday-icon">🎂</div>
+      <div class="cake">🎂</div>
 
       <h1>
         Happy Birthday,
         <span>NAVYA</span>
       </h1>
 
-      <p class="subtitle">
-        Some birthdays deserve more than
-        a two-line message.
+      <p class="sub">
+        Some birthdays deserve more than a two-line message.
       </p>
 
-      <button class="next-btn">
-        <span>Open this</span>
-        <span class="arrow">↓</span>
+      <button class="next">
+        Open this ↓
       </button>
 
     </section>
 
 
-    <!-- SCREEN 2 -->
+    <!-- ==================== SCREEN 2 ==================== -->
+
     <section class="screen">
 
-      <div class="chapter">01 — THE BEGINNING</div>
+      <div class="chapter">
+        01 — HOW IT STARTED
+      </div>
 
-      <div class="memory-date">
-        <span>4</span>
-        YEARS AGO
+      <div class="date">
+        <b>6th</b> CLASS
       </div>
 
       <h2>
-        Four years ago,<br>
-        on this very day...
+        It all started<br>
+        with a birthday. 😂
       </h2>
 
-      <div class="story-card">
+      <div class="card">
 
-        <div class="card-icon">✦</div>
+        <div class="emoji">🚌</div>
 
         <p>
-          We were in <strong>6th class</strong> when we first
-          started talking.
+          You asked me in the <strong>school bus</strong>
+          why I hadn't wished you Happy Birthday.
         </p>
 
         <p>
-          Neither of us knew that a simple conversation
-          would eventually turn into such a memorable
-          friendship.
+          And somehow, that tiny conversation became
+          the beginning of a friendship that lasted far
+          beyond what either of us expected.
         </p>
 
-        <div class="divider"></div>
+        <hr>
 
-        <p class="highlight">
-          Funny how the smallest beginnings can end up
-          becoming some of the biggest memories.
+        <p class="gold">
+          And that's how the whole thing started.
         </p>
 
       </div>
 
-      <button class="next-btn">
-        Continue <span class="arrow">→</span>
+      <button class="next">
+        Continue →
       </button>
 
     </section>
 
 
-    <!-- SCREEN 3 -->
-    <section class="screen">
+    <!-- ==================== SCREEN 3 ==================== -->
 
-      <div class="chapter">02 — THE MEMORIES</div>
+    <section class="screen memories">
+
+      <div class="chapter">
+        02 — THE MANJULIKA FILES
+      </div>
 
       <h2>
-        And then came<br>
-        all those little moments...
+        Some memories<br>
+        need no explanation. 😂
       </h2>
 
-      <div class="memory-stack">
 
-        <article class="memory-card diwali">
-          <div class="memory-number">01</div>
-          <div class="memory-emoji">🪔</div>
+      <div class="stack">
 
-          <h3>That Diwali night</h3>
+
+        <!-- MEMORY 1 -->
+
+        <article class="memory">
+
+          <i>01</i>
+
+          <div>👹</div>
+
+          <h3>
+            Manjulika
+          </h3>
 
           <p>
-            I still remember when you came to see me
-            and literally shouted my name across the market. 😂
+            Yes. <strong>Manjulika.</strong>
+            That's it. That's the memory.
           </p>
 
-          <span class="memory-tag">
-            impossible to forget
-          </span>
+          <small>
+            legendary nickname
+          </small>
+
         </article>
 
 
-        <article class="memory-card">
-          <div class="memory-number">02</div>
-          <div class="memory-emoji">😂</div>
+        <!-- MEMORY 2 -->
 
-          <h3>That funny jealousy</h3>
+        <article class="memory">
+
+          <i>02</i>
+
+          <div>🖊️</div>
+
+          <h3>
+            The Pen Incident
+          </h3>
 
           <p>
-            That ridiculous little jealousy we both had
-            whenever one of us talked to the other's friends.
+            Chewing the <strong>same pen</strong>.
+            Looking back, we really had some questionable
+            ideas. 😂
           </p>
 
-          <span class="memory-tag">
-            looking back... hilarious
-          </span>
+          <small>
+            why did we do that?
+          </small>
+
         </article>
 
 
-        <article class="memory-card">
-          <div class="memory-number">03</div>
-          <div class="memory-emoji">💬</div>
+        <!-- MEMORY 3 -->
 
-          <h3>The conversations</h3>
+        <article class="memory">
+
+          <i>03</i>
+
+          <div>🚪</div>
+
+          <h3>
+            The Exam-Day Scare
+          </h3>
 
           <p>
-            Random conversations, secrets, and being able
-            to talk about absolutely anything without
-            having to pretend.
+            Remember when you were standing near the
+            washroom during our exam and I came and
+            <strong>scared you?</strong> 😭
           </p>
 
-          <span class="memory-tag">
-            just being ourselves
-          </span>
+          <small>
+            totally worth it
+          </small>
+
+        </article>
+
+
+        <!-- MEMORY 4 -->
+
+        <article class="memory special">
+
+          <i>04</i>
+
+          <div>😂</div>
+
+          <h3>
+            Durgaashtmi
+          </h3>
+
+          <p class="inside">
+            “Ika, Durgaashtmi ko aana.”
+          </p>
+
+          <small>
+            no context required
+          </small>
+
+        </article>
+
+
+        <!-- MEMORY 5 -->
+
+        <article class="memory">
+
+          <i>05</i>
+
+          <div>✍️</div>
+
+          <h3>
+            The Boxes
+          </h3>
+
+          <p>
+            Writing <strong>our names in each other's
+            boxes.</strong>
+
+            Just another tiny thing that stayed
+            in my memory.
+          </p>
+
+          <small>
+            little things
+          </small>
+
+        </article>
+
+
+        <!-- MEMORY 6 -->
+
+        <article class="memory">
+
+          <i>06</i>
+
+          <div>👀</div>
+
+          <h3>
+            The Whole Class
+          </h3>
+
+          <p>
+            Sitting together and suddenly the
+            <strong>whole class started staring at us.</strong>
+            😂
+          </p>
+
+          <small>
+            we noticed
+          </small>
+
         </article>
 
       </div>
 
-      <button class="next-btn">
-        There's more <span class="arrow">→</span>
+
+      <button class="next">
+        There's more →
       </button>
 
     </section>
 
 
-    <!-- SCREEN 4 -->
+    <!-- ==================== SCREEN 4 ==================== -->
+
     <section class="screen">
 
-      <div class="chapter">03 — THE DAY WE LEFT</div>
+      <div class="chapter">
+        03 — THE LITTLE THINGS
+      </div>
 
-      <div class="winter-icon">❄️</div>
+      <div class="quote-mark">
+        “
+      </div>
 
       <h2>
-        And then came<br>
-        that cold winter day...
+        The things<br>
+        I actually remember.
       </h2>
 
-      <div class="winter-card">
+
+      <div class="card">
 
         <p>
-          The day when, somehow,
-          we had to go our separate ways.
+          There were so many random conversations
+          where we could just talk freely.
         </p>
 
         <p>
-          You were one of the <strong>best friends</strong>
-          I've ever had — and honestly, one of the people
-          I've been able to be completely myself around.
+          You were someone I could
+          <strong>tell my secrets to</strong>
+          and talk about almost anything with.
         </p>
 
         <p>
-          I could tell you my secrets, talk about
-          absolutely anything, and never feel like
-          I had to pretend to be someone else.
+          And honestly, that's something I don't
+          think you realise how much I valued.
         </p>
+
+        <hr>
+
+        <p class="gold">
+          I lost a friend to whom I could tell my secrets.
+        </p>
+
+      </div>
+
+
+      <p class="note">
+        Some friendships are remembered
+        in the smallest details.
+      </p>
+
+
+      <button class="next">
+        Keep going →
+      </button>
+
+    </section>
+
+
+    <!-- ==================== SCREEN 5 ==================== -->
+
+    <section class="screen">
+
+      <div class="chapter">
+        04 — THAT COLD WINTER DAY
+      </div>
+
+      <div class="snow">
+        ❄️
+      </div>
+
+      <h2>
+        And then we<br>
+        went separate ways.
+      </h2>
+
+
+      <div class="card left">
+
+        <p>
+          There is one thing I've thought about
+          over the years.
+        </p>
+
+        <p>
+          That day was partly
+          <strong>my mistake</strong>,
+          and I still feel guilty about it.
+        </p>
+
+        <p>
+          I can't change what happened,
+          but I can acknowledge it.
+        </p>
+
 
         <div class="quote">
-          "Those are the kinds of friendships
-          you don't just forget."
+          You were one of the best friends I've
+          ever had, and that will always mean
+          something to me.
         </div>
 
       </div>
 
-      <button class="next-btn">
-        Fast forward... <span class="arrow">→</span>
+
+      <button class="next">
+        Four years later... →
       </button>
 
     </section>
 
 
-    <!-- SCREEN 5 -->
-    <section class="screen question-screen">
+    <!-- ==================== SCREEN 6 ==================== -->
 
-      <div class="chapter">04 — FOUR YEARS LATER</div>
+    <section class="screen question">
 
-      <div class="question-mark">?</div>
+      <div class="chapter">
+        05 — FOUR YEARS LATER
+      </div>
+
+      <div class="qmark">
+        ?
+      </div>
 
       <h2>
         Okay... there's<br>
         just one thing.
       </h2>
 
-      <p class="question-text">
+
+      <p>
         We really haven't talked properly
         in four years. 😭
       </p>
 
-      <p class="question-text">
+      <p>
         And honestly...
       </p>
 
-      <p class="big-question">
-        I don't think we're going to let four years
-        decide the fate of a friendship that meant
-        this much, are we?
-      </p>
+
+      <div class="big">
+        I don't think we're going to let four
+        years decide the fate of a friendship
+        that meant this much, are we?
+      </div>
+
 
       <p class="ask">
         So... can we at least be friends again?
       </p>
 
+
       <div class="choices">
 
-        <button class="choice yes" id="yesBtn">
+        <button id="yes" class="yes">
           YES
         </button>
 
-        <button class="choice definitely" id="definitelyBtn">
+        <button id="definitely" class="def">
           DEFINITELY YES 😌
         </button>
 
@@ -284,21 +446,28 @@
     </section>
 
 
-    <!-- SCREEN 6 -->
-    <section class="screen final-screen">
+    <!-- ==================== FINAL SCREEN ==================== -->
 
-      <div class="confetti-container" id="confetti"></div>
+    <section class="screen final">
 
-      <div class="final-star">✦</div>
+      <div id="confetti"></div>
 
-      <div class="small-label">ONE LAST THING</div>
+      <div class="star">
+        ✦
+      </div>
+
+      <div class="label">
+        ONE LAST THING
+      </div>
+
 
       <h1>
         I was hoping<br>
         you'd say that. :)
       </h1>
 
-      <div class="final-message">
+
+      <div class="finalmsg">
 
         <p>
           Maybe we don't have to recreate the past.
@@ -308,25 +477,28 @@
           Maybe we can just start talking again.
         </p>
 
-        <div class="final-divider"></div>
+        <hr>
 
         <h3>
-          Happy Birthday, Navya. 🎂
+          You were and will always be one of the best. 🎂
         </h3>
 
         <p class="signature">
+          Happy Birthday, Navya.<br>
           — your old friend
         </p>
 
       </div>
 
-      <div class="final-sparkles">
-        ✦ &nbsp; ✧ &nbsp; ✦
+
+      <div class="sparkles">
+        ✦　✧　✦
       </div>
 
     </section>
 
   </main>
+
 
   <script src="script.js"></script>
 
