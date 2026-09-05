@@ -1,778 +1,257 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+const screens = document.querySelectorAll(".screen");
+const dots = document.querySelectorAll(".dot");
+
+let currentScreen = 0;
+let transitioning = false;
+
+
+// ---------------- SCREEN CONTROL ----------------
+
+function showScreen(index) {
+
+  if (index < 0 || index >= screens.length) return;
+  if (transitioning) return;
+
+  transitioning = true;
+
+  screens[currentScreen].classList.remove("active");
+
+  setTimeout(() => {
+
+    currentScreen = index;
+
+    screens[currentScreen].classList.add("active");
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentScreen);
+    });
+
+    transitioning = false;
+
+  }, 150);
 }
 
-html {
-  scroll-behavior: smooth;
+
+// ---------------- NEXT BUTTONS ----------------
+
+document.querySelectorAll(".next-btn").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    if (currentScreen < screens.length - 1) {
+      showScreen(currentScreen + 1);
+    }
+
+  });
+
+});
+
+
+// ---------------- YES BUTTONS ----------------
+
+document.getElementById("yesBtn").addEventListener("click", finishBirthday);
+
+document
+  .getElementById("definitelyBtn")
+  .addEventListener("click", finishBirthday);
+
+
+function finishBirthday() {
+
+  showScreen(5);
+
+  setTimeout(() => {
+    createConfetti();
+  }, 500);
+
 }
 
-body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  background: #09090f;
-  color: #f7f3ea;
-  font-family: "Inter", sans-serif;
-  overflow: hidden;
-  -webkit-tap-highlight-color: transparent;
-}
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
+// ---------------- CONFETTI ----------------
 
-/* ---------------- BACKGROUND ---------------- */
+function createConfetti() {
 
-.background {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: -2;
-}
+  const container = document.getElementById("confetti");
 
-.glow {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.16;
-}
+  container.innerHTML = "";
 
-.glow-one {
-  background: #b88a52;
-  top: -120px;
-  left: -100px;
-}
+  const pieces = 70;
 
-.glow-two {
-  background: #7056a8;
-  bottom: -120px;
-  right: -120px;
-}
+  for (let i = 0; i < pieces; i++) {
 
-.stars {
-  position: absolute;
-  inset: 0;
-  opacity: 0.25;
-  background-image:
-    radial-gradient(circle at 20% 20%, white 1px, transparent 1px),
-    radial-gradient(circle at 70% 30%, white 1px, transparent 1px),
-    radial-gradient(circle at 40% 75%, white 1px, transparent 1px),
-    radial-gradient(circle at 85% 80%, white 1px, transparent 1px);
-  background-size: 150px 150px;
-}
+    const piece = document.createElement("div");
 
-/* ---------------- PROGRESS ---------------- */
+    piece.classList.add("confetti");
 
-.progress {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 7px;
-  z-index: 50;
-}
+    piece.style.left = Math.random() * 100 + "%";
 
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  transition: 0.4s;
-}
+    piece.style.animationDuration =
+      (2.5 + Math.random() * 3) + "s";
 
-.dot.active {
-  width: 20px;
-  border-radius: 10px;
-  background: #e8c68d;
-}
+    piece.style.animationDelay =
+      Math.random() * 1.5 + "s";
 
-/* ---------------- MUSIC ---------------- */
+    piece.style.transform =
+      `rotate(${Math.random() * 360}deg)`;
 
-.music-btn {
-  position: fixed;
-  right: 18px;
-  top: 17px;
+    /*
+      Using different shapes instead of fixed colours
+      keeps the design compatible with the dark theme.
+    */
 
-  width: 42px;
-  height: 42px;
+    const shapes = [
+      "4px",
+      "6px",
+      "8px"
+    ];
 
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
+    piece.style.width =
+      shapes[Math.floor(Math.random() * shapes.length)];
 
-  background: rgba(255,255,255,0.06);
-  color: #e8c68d;
+    piece.style.height =
+      shapes[Math.floor(Math.random() * shapes.length)];
 
-  font-size: 18px;
+    piece.style.background =
+      Math.random() > 0.5
+        ? "#e8c68d"
+        : "#ffffff";
 
-  backdrop-filter: blur(12px);
-
-  z-index: 50;
-}
-
-.music-btn.playing {
-  animation: musicPulse 1.2s infinite;
-}
-
-@keyframes musicPulse {
-  50% {
-    transform: scale(1.08);
+    container.appendChild(piece);
   }
+
 }
 
-/* ---------------- SCREENS ---------------- */
 
-#story {
-  width: 100%;
-  height: 100dvh;
-  position: relative;
-}
+// ---------------- SWIPE SUPPORT ----------------
 
-.screen {
-  position: absolute;
-  inset: 0;
+let touchStartX = 0;
+let touchStartY = 0;
 
-  width: 100%;
-  height: 100%;
+document.addEventListener("touchstart", (event) => {
 
-  padding:
-    75px
-    22px
-    calc(35px + env(safe-area-inset-bottom));
+  touchStartX = event.changedTouches[0].screenX;
+  touchStartY = event.changedTouches[0].screenY;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}, { passive: true });
 
-  text-align: center;
 
-  opacity: 0;
-  visibility: hidden;
+document.addEventListener("touchend", (event) => {
 
-  transform: translateX(30px) scale(0.98);
+  const touchEndX = event.changedTouches[0].screenX;
+  const touchEndY = event.changedTouches[0].screenY;
 
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
-    visibility 0.55s;
+  const differenceX = touchStartX - touchEndX;
+  const differenceY = touchStartY - touchEndY;
 
-  overflow-y: auto;
-  overscroll-behavior: none;
-}
+  /*
+    Only treat it as a swipe when horizontal
+    movement is clearly greater than vertical movement.
+  */
 
-.screen.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0) scale(1);
-}
+  if (Math.abs(differenceX) > 70 &&
+      Math.abs(differenceX) > Math.abs(differenceY)) {
 
-/* ---------------- TYPOGRAPHY ---------------- */
+    if (differenceX > 0) {
 
-.small-label,
-.chapter {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #c6a875;
-  font-weight: 600;
-}
+      // Swipe left
+      if (currentScreen < screens.length - 1) {
+        showScreen(currentScreen + 1);
+      }
 
-.chapter {
-  margin-bottom: 22px;
-}
+    } else {
 
-h1,
-h2 {
-  font-family: "DM Serif Display", serif;
-  font-weight: 400;
-  line-height: 1.08;
-}
+      // Swipe right
+      if (currentScreen > 0) {
+        showScreen(currentScreen - 1);
+      }
 
-h1 {
-  font-size: clamp(44px, 13vw, 68px);
-}
+    }
 
-h1 span {
-  display: block;
-  color: #e8c68d;
-}
-
-h2 {
-  font-size: clamp(32px, 9vw, 48px);
-}
-
-.subtitle {
-  max-width: 310px;
-  margin-top: 20px;
-  color: #aaa5a0;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-/* ---------------- HERO ---------------- */
-
-.birthday-icon {
-  font-size: 50px;
-  margin-bottom: 20px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  50% {
-    transform: translateY(-9px);
   }
-}
 
-/* ---------------- BUTTON ---------------- */
+}, { passive: true });
 
-.next-btn {
-  margin-top: 28px;
 
-  min-height: 52px;
-  min-width: 175px;
+// ---------------- KEYBOARD SUPPORT ----------------
 
-  padding: 14px 22px;
+document.addEventListener("keydown", (event) => {
 
-  border-radius: 30px;
-  border: 1px solid rgba(232,198,141,0.4);
+  if (event.key === "ArrowRight" ||
+      event.key === "ArrowDown" ||
+      event.key === " ") {
 
-  background: rgba(232,198,141,0.08);
-  color: #e8c68d;
+    if (currentScreen < screens.length - 1) {
+      showScreen(currentScreen + 1);
+    }
 
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  }
 
-  transition: 0.25s;
-}
+  if (event.key === "ArrowLeft") {
 
-.next-btn:active {
-  transform: scale(0.94);
-  background: rgba(232,198,141,0.18);
-}
+    if (currentScreen > 0) {
+      showScreen(currentScreen - 1);
+    }
 
-.arrow {
-  margin-left: 8px;
-}
+  }
 
-/* ---------------- DATE ---------------- */
+});
 
-.memory-date {
-  margin: 8px 0 20px;
 
-  display: flex;
-  align-items: center;
-  gap: 8px;
+// ---------------- OPTIONAL MUSIC ----------------
 
-  color: #77736f;
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
 
-  font-size: 10px;
-  letter-spacing: 2px;
-}
+musicBtn.addEventListener("click", async () => {
 
-.memory-date span {
-  font-size: 28px;
-  color: #e8c68d;
-  font-family: "DM Serif Display", serif;
-}
+  /*
+    If you added music.mp3 to the project,
+    this button will control it.
+  */
 
-/* ---------------- STORY CARD ---------------- */
+  if (!music.querySelector("source")) {
 
-.story-card {
-  width: 100%;
-  max-width: 390px;
-
-  margin-top: 24px;
-  padding: 25px 21px;
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,0.07),
-      rgba(255,255,255,0.025)
+    alert(
+      "Add a music.mp3 file to the website folder first."
     );
 
-  border: 1px solid rgba(255,255,255,0.1);
-
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-}
-
-.card-icon {
-  color: #e8c68d;
-  font-size: 20px;
-  margin-bottom: 15px;
-}
-
-.story-card p {
-  color: #bcb8b2;
-  font-size: 14px;
-  line-height: 1.8;
-  margin-bottom: 15px;
-}
-
-.story-card strong {
-  color: #eee6d9;
-}
-
-.divider {
-  height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin: 20px 0;
-}
-
-.story-card .highlight {
-  color: #e8c68d;
-  font-family: "DM Serif Display", serif;
-  font-size: 17px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* ---------------- MEMORIES ---------------- */
-
-.memory-stack {
-  width: 100%;
-  max-width: 400px;
-
-  margin-top: 24px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-}
-
-.memory-card {
-  position: relative;
-
-  padding: 20px;
-
-  text-align: left;
-
-  border-radius: 20px;
-
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(255,255,255,0.09);
-
-  overflow: hidden;
-}
-
-.memory-card::after {
-  content: "";
-  position: absolute;
-
-  width: 100px;
-  height: 100px;
-
-  right: -50px;
-  top: -50px;
-
-  border-radius: 50%;
-
-  background: rgba(232,198,141,0.08);
-}
-
-.memory-number {
-  position: absolute;
-  top: 15px;
-  right: 17px;
-
-  color: rgba(255,255,255,0.22);
-
-  font-size: 10px;
-  letter-spacing: 2px;
-}
-
-.memory-emoji {
-  font-size: 25px;
-  margin-bottom: 9px;
-}
-
-.memory-card h3 {
-  font-family: "DM Serif Display", serif;
-  font-size: 23px;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-
-.memory-card p {
-  color: #aaa6a1;
-  font-size: 12px;
-  line-height: 1.7;
-  max-width: 310px;
-}
-
-.memory-tag {
-  display: inline-block;
-
-  margin-top: 12px;
-  padding: 5px 9px;
-
-  border-radius: 20px;
-
-  color: #c6a875;
-  background: rgba(232,198,141,0.07);
-
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* ---------------- WINTER ---------------- */
-
-.winter-icon {
-  font-size: 45px;
-  margin-bottom: 15px;
-
-  animation: snowfall 3s ease-in-out infinite;
-}
-
-@keyframes snowfall {
-  50% {
-    transform: translateY(8px) rotate(5deg);
-  }
-}
-
-.winter-card {
-  width: 100%;
-  max-width: 390px;
-
-  margin-top: 24px;
-
-  padding: 25px 21px;
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,0.065),
-      rgba(255,255,255,0.025)
-    );
-
-  border: 1px solid rgba(255,255,255,0.1);
-
-  text-align: left;
-}
-
-.winter-card p {
-  color: #bcb8b2;
-  font-size: 13px;
-  line-height: 1.8;
-  margin-bottom: 17px;
-}
-
-.winter-card strong {
-  color: #eee6d9;
-}
-
-.quote {
-  border-left: 2px solid #c6a875;
-
-  padding-left: 14px;
-
-  color: #e8c68d;
-
-  font-family: "DM Serif Display", serif;
-
-  font-size: 18px;
-  line-height: 1.45;
-}
-
-/* ---------------- QUESTION ---------------- */
-
-.question-mark {
-  font-family: "DM Serif Display", serif;
-
-  font-size: 65px;
-
-  color: #e8c68d;
-
-  margin-bottom: 5px;
-
-  animation: questionFloat 2.5s ease-in-out infinite;
-}
-
-@keyframes questionFloat {
-  50% {
-    transform: translateY(-8px) rotate(3deg);
-  }
-}
-
-.question-text {
-  color: #aaa6a1;
-  font-size: 13px;
-  line-height: 1.7;
-  margin-top: 15px;
-}
-
-.big-question {
-  max-width: 350px;
-
-  margin-top: 18px;
-
-  color: #ddd7ce;
-
-  font-family: "DM Serif Display", serif;
-
-  font-size: 20px;
-  line-height: 1.4;
-}
-
-.ask {
-  margin-top: 16px;
-
-  color: #e8c68d;
-
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.choices {
-  width: 100%;
-  max-width: 350px;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-
-  margin-top: 25px;
-}
-
-.choice {
-  width: 100%;
-  min-height: 55px;
-
-  border-radius: 30px;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  letter-spacing: 1px;
-
-  transition: 0.2s;
-}
-
-.choice:active {
-  transform: scale(0.95);
-}
-
-.yes {
-  background: #e8c68d;
-  color: #16130e;
-
-  border: none;
-}
-
-.definitely {
-  background: rgba(255,255,255,0.04);
-  color: #e8c68d;
-
-  border: 1px solid rgba(232,198,141,0.35);
-}
-
-/* ---------------- FINAL ---------------- */
-
-.final-screen {
-  overflow: hidden;
-}
-
-.final-star {
-  font-size: 30px;
-  color: #e8c68d;
-
-  margin-bottom: 18px;
-
-  animation: starSpin 5s linear infinite;
-}
-
-@keyframes starSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.final-screen h1 {
-  font-size: clamp(40px, 12vw, 60px);
-
-  margin-top: 16px;
-}
-
-.final-message {
-  margin-top: 27px;
-
-  max-width: 330px;
-}
-
-.final-message p {
-  color: #aaa6a1;
-  font-size: 14px;
-  line-height: 1.8;
-
-  margin-bottom: 10px;
-}
-
-.final-message h3 {
-  color: #e8c68d;
-
-  font-family: "DM Serif Display", serif;
-
-  font-size: 25px;
-  font-weight: 400;
-
-  margin-top: 20px;
-}
-
-.final-divider {
-  width: 45px;
-  height: 1px;
-
-  background: #c6a875;
-
-  margin: 20px auto;
-}
-
-.signature {
-  font-size: 11px !important;
-  color: #77736f !important;
-  margin-top: 5px;
-}
-
-.final-sparkles {
-  margin-top: 30px;
-
-  color: #c6a875;
-
-  letter-spacing: 5px;
-
-  animation: sparkle 2s infinite;
-}
-
-@keyframes sparkle {
-  50% {
-    opacity: 0.4;
-  }
-}
-
-/* ---------------- CONFETTI ---------------- */
-
-.confetti-container {
-  position: absolute;
-  inset: 0;
-
-  pointer-events: none;
-
-  overflow: hidden;
-}
-
-.confetti {
-  position: absolute;
-
-  width: 6px;
-  height: 10px;
-
-  top: -20px;
-
-  opacity: 0;
-
-  animation: confettiFall linear forwards;
-}
-
-@keyframes confettiFall {
-
-  0% {
-    transform:
-      translateY(-20px)
-      rotate(0deg);
-
-    opacity: 1;
+    return;
   }
 
-  100% {
-    transform:
-      translateY(110vh)
-      rotate(720deg);
+  try {
 
-    opacity: 0;
+    if (music.paused) {
+
+      await music.play();
+
+      musicBtn.classList.add("playing");
+      musicBtn.textContent = "♫";
+
+    } else {
+
+      music.pause();
+
+      musicBtn.classList.remove("playing");
+      musicBtn.textContent = "♫";
+
+    }
+
+  } catch (error) {
+
+    console.log("Music could not be played:", error);
+
   }
 
-}
+});
 
-/* ---------------- SMALL PHONES ---------------- */
 
-@media (max-height: 680px) {
+// ---------------- PREVENT ACCIDENTAL SCROLL ----------------
 
-  .screen {
-    padding-top: 65px;
-    padding-bottom: 20px;
-  }
+document.addEventListener("touchmove", (event) => {
 
-  h2 {
-    font-size: 29px;
-  }
+  /*
+    Don't interfere with scrolling inside a screen.
+    The browser handles normal vertical scrolling.
+  */
 
-  .story-card,
-  .winter-card {
-    padding: 18px;
-    margin-top: 15px;
-  }
-
-  .story-card p,
-  .winter-card p {
-    font-size: 12px;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-
-  .memory-stack {
-    margin-top: 12px;
-    gap: 8px;
-  }
-
-  .memory-card {
-    padding: 14px;
-  }
-
-  .memory-card h3 {
-    font-size: 20px;
-  }
-
-  .memory-card p {
-    font-size: 11px;
-  }
-
-  .next-btn {
-    margin-top: 15px;
-  }
-
-  .choices {
-    margin-top: 17px;
-  }
-
-}
-
-/* ---------------- TABLET / LANDSCAPE ---------------- */
-
-@media (min-width: 600px) {
-
-  .screen {
-    max-width: 600px;
-    margin: auto;
-    left: 50%;
-    transform: translateX(-50%) translateX(30px) scale(0.98);
-  }
-
-  .screen.active {
-    transform: translateX(-50%) scale(1);
-  }
-
-}
+}, { passive: true });
